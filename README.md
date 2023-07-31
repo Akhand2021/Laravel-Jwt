@@ -1,66 +1,93 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Laravel JWT Authentication Example
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a simple Laravel project demonstrating how to implement JWT (JSON Web Token) based authentication in a Laravel application. JWT is a popular method for securely transmitting information between parties as a JSON object. It is commonly used for implementing stateless authentication in web APIs.
 
-## About Laravel
+### Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- User registration and login with JWT token generation.
+- JWT token refresh to extend the user's session.
+- Endpoint to get user information using the JWT token.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Installation
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Clone the repository:
 
-## Learning Laravel
+   ```bash
+   git clone https://github.com/Akhand2021/Laravel-Jwt.git
+   ```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+2. Navigate to the project folder:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+   ```bash
+   cd Laravel-Jwt
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. Install the dependencies:
 
-## Laravel Sponsors
+   ```bash
+   composer install
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+4. Configure your `.env` file with the necessary database and JWT settings. You can copy the `.env.example` file:
 
-### Premium Partners
+   ```bash
+   cp .env.example .env
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+   Then, edit `.env` with your database credentials and JWT secret.
 
-## Contributing
+5. Generate the application key:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   ```bash
+   php artisan key:generate
+   ```
 
-## Code of Conduct
+6. Run the database migrations and seed the database:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   ```bash
+   php artisan migrate --seed
+   ```
 
-## Security Vulnerabilities
+7. Start the development server:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+   ```bash
+   php artisan serve
+   ```
 
-## License
+### API Endpoints
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **POST** `/api/register`: User registration. Provide `name`, `email`, and `password` as JSON data.
+
+- **POST** `/api/login`: User login. Provide `email` and `password` as JSON data. This will return a JWT token for authentication.
+
+- **POST** `/api/logout`: User logout. Requires a valid JWT token in the `Authorization` header.
+
+- **POST** `/api/refresh`: Refresh JWT token. Requires a valid JWT token in the `Authorization` header. This will return a new JWT token with an extended expiration time.
+
+- **GET** `/api/me`: Get authenticated user's information. Requires a valid JWT token in the `Authorization` header.
+
+### Usage
+
+1. Register a new user using the `/api/register` endpoint.
+
+2. Login with the registered user using the `/api/login` endpoint. Copy the JWT token from the response.
+
+3. Use the JWT token to access protected endpoints like `/api/me`, `/api/logout`, or `/api/refresh` by passing the token in the `Authorization` header as `Bearer <YOUR_JWT_TOKEN>`.
+
+4. Refresh the JWT token using the `/api/refresh` endpoint to extend the user's session.
+
+### Dependencies
+
+- [Laravel](https://laravel.com/): A popular PHP web application framework.
+- [Tymon JWT Auth](https://github.com/tymondesigns/jwt-auth): A package to provide JWT authentication for Laravel.
+
+### License
+
+This project is open-source and available under the [MIT License](LICENSE).
+
+Feel free to explore, learn, and use this example as a starting point for your Laravel JWT authentication implementation. If you have any suggestions or improvements, please feel free to contribute or open an issue. Happy coding!
+
+![Screenshot 2023-08-01 034411](https://github.com/Akhand2021/Laravel-Jwt/assets/104663417/168de75c-b280-4359-9fa3-b7f5403b97c7)
+![Screenshot 2023-08-01 034448](https://github.com/Akhand2021/Laravel-Jwt/assets/104663417/bb158522-b3b4-4513-b1e8-aac63fee1df7)
+![Screenshot 2023-08-01 034552](https://github.com/Akhand2021/Laravel-Jwt/assets/104663417/ecda4dcf-6c27-4f02-bd17-e94a9a025958)
+![Screenshot 2023-08-01 035118](https://github.com/Akhand2021/Laravel-Jwt/assets/104663417/f1fb8539-207e-4b21-93da-cd07077b2ab8)
